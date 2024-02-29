@@ -1,5 +1,7 @@
 package br.com.TherlysonDev.screenMatchSpring;
 
+import br.com.TherlysonDev.screenMatchSpring.model.DadosEpisodio;
+import br.com.TherlysonDev.screenMatchSpring.model.DadosTemporada;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,5 +25,12 @@ public class ScreenMatchSpringApplication implements CommandLineRunner{
 		DadosSerie dados = converte.obterDados(json, DadosSerie.class);
 		System.out.println(dados);
 
+		String jsonEp = consumApi.obterDadosJson("https://www.omdbapi.com/?t=dark&season=1&episode=1&apikey=d494adfa");
+		DadosEpisodio dadosEp = converte.obterDados(jsonEp, DadosEpisodio.class);
+		System.out.println(dadosEp);
+
+		String jsonTemp = consumApi.obterDadosJson("https://www.omdbapi.com/?t=dark&season=1&apikey=d494adfa");
+		DadosTemporada dadosTemp = converte.obterDados(jsonTemp, DadosTemporada.class);
+		System.out.println(dadosTemp);
 	}
 }
