@@ -1,12 +1,15 @@
 package br.com.TherlysonDev.screenMatchSpring.principal;
 
 import br.com.TherlysonDev.screenMatchSpring.controller.ControladorSerie;
+import br.com.TherlysonDev.screenMatchSpring.model.DadosEpisodio;
 import br.com.TherlysonDev.screenMatchSpring.model.DadosSerie;
 import br.com.TherlysonDev.screenMatchSpring.model.DadosTemporada;
 import br.com.TherlysonDev.screenMatchSpring.service.ConsumoApi;
 import br.com.TherlysonDev.screenMatchSpring.service.ConverteDados;
 
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Principal {
     private Scanner scanner = new Scanner(System.in);
@@ -32,6 +35,16 @@ public class Principal {
             controlador.adicionarTemporada(dadosTemp);
         }
         System.out.println();
-        controlador.getTemporadas().forEach(System.out::println);
+
+//        controlador.getTemporadas().forEach(t -> t.episodios().forEach(e -> System.out.println(e.title())));
+        for(DadosTemporada temporada: controlador.getTemporadas()){
+            System.out.println(temporada.season() + "º TEMPORADA: ");
+            temporada.episodios().forEach(System.out::println);
+        }
+
+        List<DadosEpisodio> episodios = controlador.getTemporadas().stream()
+                .flatMap(t -> t.episodios().stream())
+ //               .collect(Collectors.toList()) //gera uma lista que pode ser mutável
+                .toList(); //gera uma lista imutável
     }
 }
