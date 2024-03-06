@@ -1,6 +1,7 @@
 package br.com.TherlysonDev.screenMatchSpring;
 
 import br.com.TherlysonDev.screenMatchSpring.principal.Principal;
+import br.com.TherlysonDev.screenMatchSpring.principal.Principal2;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +15,7 @@ public class ScreenMatchSpringApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		Principal principal = new Principal();
-		principal.exibirMenu();
+		Principal2 principal = new Principal2();
+		principal.exibeMenu();
 	}
 }
