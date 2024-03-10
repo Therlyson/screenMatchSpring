@@ -1,5 +1,6 @@
 package br.com.TherlysonDev.screenMatchSpring.model;
 
+import br.com.TherlysonDev.screenMatchSpring.service.Categoria;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -10,7 +11,7 @@ public record DadosSerie(@JsonAlias("Title") String title,@JsonAlias("Genre") St
                          @JsonAlias("Plot") String plot, @JsonAlias("Poster") String poster) {
     @Override
     public String toString() {
-        return "Titulo: " + title + "\nGênero: " + genre +
+        return "Titulo: " + title + "\nGênero: " + Categoria.fromPortugues(Serie.generosList(genre)) +
                 "\nNota do imdb: " + noteImdb + "\nTotal de temporadas: " +
                 totalSeasons + "\nAtores: " + actors + "\nSinopese: " + plot
                 + "\nImagem: " + poster;

@@ -3,6 +3,7 @@ package br.com.TherlysonDev.screenMatchSpring.principal;
 import br.com.TherlysonDev.screenMatchSpring.model.DadosSerie;
 import br.com.TherlysonDev.screenMatchSpring.model.DadosTemporada;
 import br.com.TherlysonDev.screenMatchSpring.model.Serie;
+import br.com.TherlysonDev.screenMatchSpring.repository.SerieRepository;
 import br.com.TherlysonDev.screenMatchSpring.service.ConsumoApi;
 import br.com.TherlysonDev.screenMatchSpring.service.ConverteDados;
 
@@ -10,15 +11,18 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Principal2{
     private Scanner scanner = new Scanner(System.in);
     private ConsumoApi consumo = new ConsumoApi();
     private ConverteDados conversor = new ConverteDados();
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
-    private final String API_KEY = "&apiKey=d494adfa";
-    private List<DadosSerie> dadosSeries = new ArrayList<>();
+    private final String API_KEY = "&apiKey=" + System.getenv("CHAVE_API_OMDB");
+    private SerieRepository repository;
+
+    public Principal2(SerieRepository repository) {
+        this.repository = repository;
+    }
 
     public void exibeMenu() {
         System.out.println("\n====================== BEM VINDO AO OMDB SÉRIES ======================");
@@ -58,7 +62,8 @@ public class Principal2{
     private void buscarSerieWeb() {
         DadosSerie dados = getDadosSerie();
         if(dados!=null){
-            dadosSeries.add(dados);
+            Serie serie = new Serie(dados);
+            repository.save(serie);
             System.out.println(dados);
         }
     }
@@ -95,10 +100,8 @@ public class Principal2{
 
     private void listaDeSéries(){
         System.out.println("\n- Séries pesquisadas por você: ");
-        List<Serie> series = new ArrayList<>();
-        series = dadosSeries.stream().map(d -> new Serie(d))
-                        .collect(Collectors.toList());
+        List<Serie> series = repository.findAll();
         series.stream().sorted(Comparator.comparing(Serie::getTitle))
-                        .forEach(s -> System.out.println(s));
+                        .forEach(System.out::println);
     }
 }
