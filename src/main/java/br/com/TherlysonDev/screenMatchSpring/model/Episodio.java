@@ -1,15 +1,24 @@
 package br.com.TherlysonDev.screenMatchSpring.model;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+@Entity
+@Table(name = "episodios")
 public class Episodio {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Integer season;
     private String title;
     private Integer episode;
     private String runtime;
     private Double noteImdb;
     private LocalDate released;
+    @ManyToOne
+    private Serie serie;
 
     public Episodio(Integer season, DadosEpisodio dadosEpisodio) {
         this.season = season;
@@ -23,6 +32,20 @@ public class Episodio {
             this.noteImdb = 0.0;
             this.released = null;
         }
+    }
+
+    public Episodio(){}
+
+    public Long getId() {
+        return id;
+    }
+
+    public Serie getSerie() {
+        return serie;
+    }
+
+    public void setSerie(Serie serie) {
+        this.serie = serie;
     }
 
     public Integer getSeason() {

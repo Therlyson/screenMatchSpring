@@ -1,6 +1,5 @@
 package br.com.TherlysonDev.screenMatchSpring.model;
 
-import br.com.TherlysonDev.screenMatchSpring.service.Categoria;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

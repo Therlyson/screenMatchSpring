@@ -1,6 +1,5 @@
 package br.com.TherlysonDev.screenMatchSpring.model;
 
-import br.com.TherlysonDev.screenMatchSpring.service.Categoria;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -14,24 +13,18 @@ public class Serie {
     private Long id;
     @Column(unique = true)
     private String title;
-
-//    @ElementCollection(targetClass = Categoria.class) //usada para mapear uma coleção de elementos incorporados,
-//    @Enumerated(EnumType.STRING)
-//    @CollectionTable(name = "serie_categories", joinColumns = @JoinColumn(name = "serie_id"))
-//    @Column(name = "gêneros")
-    @Transient
-    private List<Categoria> genre;
+    private String genre;
     private Double noteImdb;
     private Integer totalSeasons;
     private String actors;
     private String plot;
     private String poster;
-    @Transient
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Episodio> episodios;
 
     public Serie(DadosSerie dadosSerie){
         this.title = dadosSerie.title();
-        this.genre = Categoria.fromPortugues(generosList(dadosSerie.genre())); //retorna uma lista com os generos em portugues
+        this.genre = Categoria.fromPortugues(generosList(dadosSerie.genre())); //retorna a tradução dos genêros em português
         this.noteImdb = dadosSerie.noteImdb();
         this.totalSeasons = dadosSerie.totalSeasons();
         this.actors = dadosSerie.actors();
@@ -53,11 +46,16 @@ public class Serie {
         return episodios;
     }
 
+    public void setEpisodios(List<Episodio> episodios) {
+        episodios.forEach(e -> e.setSerie(this)); //bidirecionamento
+        this.episodios = episodios;
+    }
+
     public String getTitle() {
         return title;
     }
 
-    public List<Categoria> getGenre() {
+    public String getGenre() {
         return genre;
     }
 
@@ -95,6 +93,6 @@ public class Serie {
         return "Titulo: " + title + ", Gênero: " + genre +
                 ", Nota do imdb: " + noteImdb + ", Total de temporadas: " +
                 totalSeasons + ", Atores: " + actors + ", Sinopese: " + plot
-                + ", Imagem: " + poster;
+                + ", Imagem: " + poster  + ", Episódios: " + episodios;
     }
 }
