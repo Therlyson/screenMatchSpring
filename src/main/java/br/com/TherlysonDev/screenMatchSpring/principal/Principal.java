@@ -1,10 +1,6 @@
 package br.com.TherlysonDev.screenMatchSpring.principal;
 
-import br.com.TherlysonDev.screenMatchSpring.controller.ControladorSerie;
-import br.com.TherlysonDev.screenMatchSpring.model.DadosEpisodio;
-import br.com.TherlysonDev.screenMatchSpring.model.DadosSerie;
-import br.com.TherlysonDev.screenMatchSpring.model.DadosTemporada;
-import br.com.TherlysonDev.screenMatchSpring.model.Episodio;
+import br.com.TherlysonDev.screenMatchSpring.model.*;
 import br.com.TherlysonDev.screenMatchSpring.service.ConsumoApi;
 import br.com.TherlysonDev.screenMatchSpring.service.ConverteDados;
 
@@ -15,7 +11,7 @@ public class Principal {
     private Scanner scanner = new Scanner(System.in);
     private ConsumoApi consumo = new ConsumoApi();
     private ConverteDados converte = new ConverteDados();
-    private ControladorSerie controlador = new ControladorSerie();
+    private List<DadosTemporada> controladorSerie = new ArrayList<>();
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
     private final String API_KEY = "&apiKey=d494adfa";
 
@@ -32,16 +28,16 @@ public class Principal {
         for(int i = 1; i<=dados.totalSeasons(); i++){
             jsonTemp = consumo.obterDadosJson(ENDERECO + nomeSerie + "&season=" + i + API_KEY);
             DadosTemporada dadosTemp = converte.obterDados(jsonTemp, DadosTemporada.class);
-            controlador.adicionarTemporada(dadosTemp);
+            controladorSerie.add(dadosTemp);
         }
 
         System.out.println("\n- Todas as os episódios e temporadas: ");
-        for(DadosTemporada temporada: controlador.getTemporadas()){
+        for(DadosTemporada temporada: controladorSerie){
             System.out.println(temporada.season() + "º TEMPORADA: ");
             temporada.episodios().forEach(System.out::println);
         }
 
-        List<Episodio> episodios = controlador.getTemporadas().stream()
+        List<Episodio> episodios = controladorSerie.stream()
                 .flatMap(t -> t.episodios().stream() //flatMap junta os episódios de todas as temporadas
                         .map(d -> new Episodio(t.season(), d))) //transformando cada dadoEpisodio em um episodio
                 .collect(Collectors.toList());
