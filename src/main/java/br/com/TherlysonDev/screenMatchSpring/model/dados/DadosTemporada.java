@@ -1,4 +1,4 @@
-package br.com.TherlysonDev.screenMatchSpring.model;
+package br.com.TherlysonDev.screenMatchSpring.model.dados;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

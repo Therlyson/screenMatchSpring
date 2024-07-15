@@ -1,5 +1,6 @@
 package br.com.TherlysonDev.screenMatchSpring.model;
 
+import br.com.TherlysonDev.screenMatchSpring.model.dados.DadosEpisodio;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

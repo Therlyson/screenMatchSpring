@@ -1,9 +1,11 @@
 package br.com.TherlysonDev.screenMatchSpring.model;
 
+import br.com.TherlysonDev.screenMatchSpring.model.dados.DadosSerie;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalDouble;
 
 @Entity
 @Table(name = "series")
@@ -25,10 +27,10 @@ public class Serie {
     public Serie(DadosSerie dadosSerie){
         this.title = dadosSerie.title();
         this.genre = Categoria.fromPortugues(generosList(dadosSerie.genre())); //retorna a tradução dos genêros em português
-        this.noteImdb = dadosSerie.noteImdb();
+        this.noteImdb = OptionalDouble.of(Double.valueOf(dadosSerie.noteImdb())).orElse(0.0);
         this.totalSeasons = dadosSerie.totalSeasons();
         this.actors = dadosSerie.actors();
-        this.plot = dadosSerie.plot(); //adicionar o gpt para traduzir
+        this.plot = dadosSerie.plot();
         this.poster = dadosSerie.poster();
     }
 
